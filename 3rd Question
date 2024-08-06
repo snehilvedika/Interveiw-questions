@@ -1,0 +1,98 @@
+Remove Duplicates from Sorted Array
+中文文档
+
+Description
+Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Then return the number of unique elements in nums.
+
+Consider the number of unique elements of nums to be k, to get accepted, you need to do the following things:
+
+Change the array nums such that the first k elements of nums contain the unique elements in the order they were present in nums initially. The remaining elements of nums are not important as well as the size of nums.
+Return k.
+Custom Judge:
+
+The judge will test your solution with the following code:
+
+int[] nums = [...]; // Input array
+int[] expectedNums = [...]; // The expected answer with correct length
+
+int k = removeDuplicates(nums); // Calls your implementation
+
+assert k == expectedNums.length;
+for (int i = 0; i < k; i++) {
+    assert nums[i] == expectedNums[i];
+}
+If all assertions pass, then your solution will be accepted.
+
+ 
+
+Example 1:
+
+Input: nums = [1,1,2]
+Output: 2, nums = [1,2,_]
+Explanation: Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+Example 2:
+
+Input: nums = [0,0,1,1,1,2,2,3,3,4]
+Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.
+It does not matter what you leave beyond the returned k (hence they are underscores).
+ 
+
+Constraints:
+
+1 <= nums.length <= 3 * 104
+-100 <= nums[i] <= 100
+nums is sorted in non-decreasing order.
+Solutions
+Solution 1: Single Pass
+We use a variable 
+ to record the current length of the processed array. Initially, 
+ represents an empty array.
+
+Then we traverse the array from left to right. For each element 
+ we encounter, if 
+ or 
+, we place 
+ in the position of 
+, and then increment 
+ by 
+. Otherwise, 
+ is the same as 
+, so we skip this element. Continue to traverse until the entire array is traversed.
+
+In this way, when the traversal ends, the first 
+ elements in 
+ are the answer we are looking for, and 
+ is the length of the answer.
+
+The time complexity is 
+, and the space complexity is 
+. Here, 
+ is the length of the array.
+
+Supplement:
+
+The original problem requires that the same number appear at most once. We can extend it to keep at most 
+ identical numbers.
+
+Since the same number can be kept at most 
+ times, we can directly keep the first 
+ elements of the original array;
+For the following numbers, the premise of being able to keep them is: the current number 
+ is compared with the last $k$th element of the previously retained numbers. If they are different, keep them, otherwise skip them.
+
+
+/////////////In C++/////////////
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        int k = 0;
+        for (int x : nums) {
+            if (k == 0 || x != nums[k - 1]) {
+                nums[k++] = x;
+            }
+        }
+        return k;
+    }
+};
