@@ -1,0 +1,102 @@
+class Solution {
+public:
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        vector<string> ans;
+        string str = "";
+        int space =0;
+        int start =0;
+        int totSize =0;
+        int cnt = 0;
+        for(int i=0;i<words.size();i++){
+           int size = words[i].size();
+           cnt++;
+           if((totSize+size+(cnt-1))<=maxWidth){
+               totSize+=size;
+             
+               if(i==words.size()-1){
+                     str = "";
+                   for(int j = start;j<words.size();j++){
+                         str+=words[j];
+                         if(j!=words.size()-1)
+                         str+=" ";
+                   }
+                  
+                   while(str.size()!=maxWidth){
+                        str+=" ";
+                   }
+                   ans.push_back(str);
+                   break;
+                   //str="";
+               }
+               continue;
+           }
+           else{
+               if((cnt-1)==1){
+                   str = words[i-1];
+                   for(int j =0;j<maxWidth-totSize;j++){
+                      // str.push_back(" ");
+                       str+=" ";
+                   }
+                   ans.push_back(str);
+                  // str = words[i];
+                   totSize = words[i].size();
+                   start = i;
+                   space =0;
+                   cnt=1;
+                    if(i==words.size()-1){
+                      str = words[i];
+                      for(int k=0;k<maxWidth-totSize;k++){
+                          //str.push_back(" ");
+                           str+=" ";
+                      }
+                      ans.push_back(str);
+                  }
+               }
+              else{
+                  space = cnt-2;
+                  str = "";
+                  int temp = maxWidth-totSize;
+                  for(int j =start;j<i;j++){
+                      str+=words[j];
+                      if(j==(i-1)){
+                          break;
+                      }
+                      if(temp%space==0){
+                          for(int k=0;k<(temp/space);k++){
+                             // str.push_back(" ");
+                              str+=" ";
+                          }
+                         
+                          temp = temp-(temp/space);
+                           space--;
+                      }
+                      else{
+                             for(int k=0;k<=(temp/space);k++){
+                             // str.push_back(" ");
+                              str+=" ";
+                          }
+                         
+                          temp = temp-(temp/space)-1;
+                           space--;
+                      }
+                  }
+                  ans.push_back(str);
+                  //str="";
+                  cnt = 1;
+                  space =0;
+                  totSize = words[i].size();
+                  start = i;
+                  if(i==words.size()-1){
+                      str = words[i];
+                      for(int k=0;k<maxWidth-totSize;k++){
+                          //str.push_back(" ");
+                           str+=" ";
+                      }
+                      ans.push_back(str);
+                  }
+              }
+           }
+        }
+        return ans;
+    }
+};
