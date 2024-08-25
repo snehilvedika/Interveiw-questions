@@ -1,0 +1,42 @@
+#define ll long long
+class Solution {
+public:
+    string cmptostring(ll n){
+        ll tmpn=n;
+        if(n<0)
+        n*=-1;
+        string s;
+        while(n!=0){
+            int r=n%10;
+            s=to_string(r)+s;
+            n/=10;
+        }
+        if(s=="")
+        return "0";
+        if(tmpn<0)
+        s="-"+s;
+        return s;
+    }
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string>res;
+        int n=nums.size();
+
+        for(auto i=0;i<nums.size();i++){
+            ll a=nums[i],b=0;
+         while((i+1<n) && ((ll)((ll)nums[i+1] - (ll)nums[i]) <= 1)){
+                b=nums[i+1];
+                i++;
+            }
+            string s;
+            s+=cmptostring(a);
+            if(a!=b && b!=0){
+                s+="->";
+                s+=cmptostring(b);
+            }    
+              res.push_back(s);
+            
+        }
+          
+        return res;
+    }
+};
